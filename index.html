@@ -131,7 +131,7 @@
     <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
 
     <!-- OpenGraph meta tags -->
-    <meta property="og:title" content="RainDB" />
+    <meta property="og:title" content="RainDB" id="og-title" />
     <meta property="og:description" content="The Rain World mods database.
 Explore or search for mods, dependencies, files, or links to the Steam Workshop."/>
     <meta property="og:type" content="website" />
@@ -584,9 +584,32 @@ Explore or search for mods, dependencies, files, or links to the Steam Workshop.
 
         toggle("mods");
 
+        function updateOpenGraphTags(modId) {
+
+            var modinfo = null;
+            for(var i=0; i<Mods.length; i++) {
+                if (Mods[i]["workshop_id"] === modId) {
+                    modinfo = Mods[i];
+                    break;
+                }
+            }
+            if (modinfo === null)
+                return;
+            document.getElementById('infobox_title').innerHTML = modinfo['name'];
+
+                document.getElementById('og-title').setAttribute('content', modinfo['name']);
+                // document.getElementById('og-description').setAttribute('content', modInfo.description);
+                // document.getElementById('og-image').setAttribute('content', modInfo.image);
+                // document.getElementById('og-url').setAttribute('content', window.location.href);
+            
+        }
+
         if (window.location.hash != "") {
+            updateOpenGraphTags(window.location.hash.slice(1))
             showInfoboxWithModInfo(window.location.hash.slice(1))
         }
+
+
     </script>
 
     <!-- Footer -->
